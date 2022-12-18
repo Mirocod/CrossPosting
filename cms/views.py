@@ -1,5 +1,5 @@
 import os
-from json import JSONDecoder
+from json import JSONDecoder, JSONEncoder
 
 import requests
 from django.http import JsonResponse
@@ -42,10 +42,38 @@ class ArticleView(View):
                       message=article.body,
                       attachments=article.link)
 
+    def _promote_to_ok(self, article: Article):
+        import ok_api
+
+        ok_access_token = os.getenv('OK_ACCESS_TOKEN')
+        ok_application_key = os.getenv('OK_APPLICATION_KEY')
+        ok_application_secret_key = os.getenv('OK_APPLICATION_SECRET_KEY')
+
+        session = ok_api.OkApi(access_token=ok_access_token,
+                               application_key=ok_application_key,
+                               application_secret_key=ok_application_secret_key)
+        attachments = {
+            'media': [
+                {
+                    'type': 'text',
+                    'text': article.body,
+                },
+                {
+                    'type': 'link',
+                    'url': article.link,
+                },
+            ]
+        }
+        encoded_attachments = JSONEncoder().encode(attachments)
+        session.mediatopic.post(type='GROUP_THEME',
+                                gid='70000001426867',
+                                attachment=encoded_attachments)
+
     def post(self, request):
         article_data = JSONDecoder().decode(request.body.decode())
         article = Article.objects.create(**article_data)
         self._promote_to_telegram(article)
+        self._promote_to_ok(article)
         self._promote_to_vk(article)
         response = {'ok': True}
         return JsonResponse(response)
