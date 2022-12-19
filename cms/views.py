@@ -1,14 +1,14 @@
 import os
-from json import JSONDecoder, JSONEncoder
+from json import JSONEncoder
 
 import requests
 from django.http import JsonResponse, HttpRequest
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
+from cms.forms import ArticleForm
 from cms.models import Article
 
 
@@ -83,8 +83,10 @@ class ArticleView(View):
 
 
 def new_article(request):
+    article_form = ArticleForm()
+    article_context = {
+        'new_article_form': article_form
+    }
     return render(request,
-                  template_name='articles/new.html',)
-
-
-
+                  template_name='articles/new.html',
+                  context=article_context)

@@ -1,13 +1,28 @@
-<h1>Заполните данные статьи для продвижения в соц. сетях</h1>
-<form
-        method="post"
-        enctype="application/x-www-form-urlencoded"
-        action="{% url 'create-article' %}"
->
-    {% csrf_token %}
-    <label for="body">Краткий текст статьи</label>
-    <textarea id="body" name="body"></textarea>
-    <label for="link">Ссылка</label>
-    <input type="text" name="link" id="link">
-    <input type="submit" value="Продвинуть">
-</form>
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% block content %}
+    <div class="container">
+        <div class="row my-5">
+            <div class="col-md-12">
+                <h1>Заполните данные статьи для продвижения в соц. сетях</h1>
+                <form
+                        method="post"
+                        enctype="application/x-www-form-urlencoded"
+                        action="{% url 'create-article' %}"
+                        class="form"
+                >
+                    {% csrf_token %}
+                    {% bootstrap_form new_article_form %}
+                    {% buttons %}
+                        <button
+                                class="btn btn-primary"
+                                type="submit"
+                        >
+                            Продвинуть
+                        </button>
+                    {% endbuttons %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
