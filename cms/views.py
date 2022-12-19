@@ -2,9 +2,11 @@ import os
 from json import JSONDecoder, JSONEncoder
 
 import requests
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpRequest
+from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views import View
+from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from cms.models import Article
@@ -69,11 +71,20 @@ class ArticleView(View):
                                 gid='70000001426867',
                                 attachment=encoded_attachments)
 
-    def post(self, request):
-        article_data = JSONDecoder().decode(request.body.decode())
-        article = Article.objects.create(**article_data)
+    def post(self, request: HttpRequest):
+        post_data = request.POST
+        article = Article.objects.create(body=post_data['body'],
+                                         link=post_data['link'])
         self._promote_to_telegram(article)
         self._promote_to_ok(article)
         self._promote_to_vk(article)
         response = {'ok': True}
         return JsonResponse(response)
+
+
+def new_article(request):
+    return render(request,
+                  template_name='articles/new.html',)
+
+
+
