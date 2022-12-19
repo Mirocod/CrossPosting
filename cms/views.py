@@ -2,7 +2,7 @@ import os
 from json import JSONEncoder
 
 import requests
-from django.http import JsonResponse, HttpRequest
+from django.http import HttpRequest
 from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -78,8 +78,7 @@ class ArticleView(View):
         self._promote_to_telegram(article)
         self._promote_to_ok(article)
         self._promote_to_vk(article)
-        response = {'ok': True}
-        return JsonResponse(response)
+        return render(request, template_name='articles/created.html')
 
 
 def new_article(request):
