@@ -15,6 +15,8 @@ from os import path
 import dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from django.urls import reverse
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 env_file = path.join(BASE_DIR, '.env')
 dotenv.read_dotenv(env_file)
@@ -31,6 +33,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN_URL = '/cms/'
 
 # Application definition
 

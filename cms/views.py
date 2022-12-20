@@ -2,7 +2,9 @@ import os
 from json import JSONEncoder
 
 import requests
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
@@ -12,7 +14,7 @@ from cms.forms import ArticleForm, UserForm
 from cms.models import Article
 
 
-class ArticleView(View):
+class ArticleView(LoginRequiredMixin, View):
     def _promote_to_telegram(self, article: Article):
         bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
         channel_id = os.getenv('TELEGRAM_CHAT_ID')
@@ -80,6 +82,7 @@ class ArticleView(View):
         return render(request, template_name='articles/created.html')
 
 
+@login_required
 def new_article(request):
     article_form = ArticleForm()
     article_context = {
@@ -103,9 +106,11 @@ class AuthenticationView(View):
     def post(self, request, *args, **kwargs):
         username = request.POST['username']
         password = request.POST['password']
-        authenticated = authenticate(username=username,
-                                     password=password)
-        if authenticated:
-            return HttpResponseRedirect(reverse('new-article'))
-        else:
+        authenticated_user = authenticate(username=username,
+                                          password=password)
+        if authenticated_user is None:
             return HttpResponseRedirect(reverse('authenticate'))
+        else:
+            login(request,
+                  user=authenticated_user)
+            return HttpResponseRedirect(reverse('new-article'))
