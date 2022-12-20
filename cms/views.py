@@ -2,6 +2,7 @@ import os
 from json import JSONEncoder
 
 import requests
+from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -109,8 +110,14 @@ class AuthenticationView(View):
         authenticated_user = authenticate(username=username,
                                           password=password)
         if authenticated_user is None:
+            messages.add_message(request,
+                                 messages.ERROR,
+                                 'Неправильное имя пользователя и/или пароль')
             return HttpResponseRedirect(reverse('authenticate'))
         else:
+            messages.add_message(request,
+                                 messages.SUCCESS,
+                                 'Поздравляю, вы вошли успешно')
             login(request,
                   user=authenticated_user)
             return HttpResponseRedirect(reverse('new-article'))
