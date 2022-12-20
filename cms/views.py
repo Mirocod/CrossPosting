@@ -4,15 +4,12 @@ from json import JSONEncoder
 import requests
 from django.http import HttpRequest
 from django.shortcuts import render
-from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.decorators.csrf import csrf_exempt
 
 from cms.forms import ArticleForm
 from cms.models import Article
 
 
-@method_decorator(csrf_exempt, name='dispatch')
 class ArticleView(View):
     def _promote_to_telegram(self, article: Article):
         bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
