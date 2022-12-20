@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from .views import handle_root_path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('cms/', include('cms.urls')),
+    path('', handle_root_path, name='root'),
 ]

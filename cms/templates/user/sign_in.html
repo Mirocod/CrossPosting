@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load bootstrap5 %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <form
+                        action="{% url 'authenticate' %}"
+                        method="post"
+                        enctype="application/x-www-form-urlencoded"
+                >
+                    {% csrf_token %}
+                    {% bootstrap_form user_form %}
+                    {% buttons %}
+                        <button
+                                class="btn btn-primary"
+                                type="submit"
+                        >
+                            Войти
+                        </button>
+                    {% endbuttons %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

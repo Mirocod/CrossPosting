@@ -3,10 +3,13 @@ from json import JSONEncoder
 
 import requests
 from django.http import HttpRequest
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views import View
+from django.views import View as BaseView
 
 from cms.forms import ArticleForm
+from cms.forms import UserForm
 from cms.models import Article
 
 
@@ -86,3 +89,17 @@ def new_article(request):
     return render(request,
                   template_name='articles/new.html',
                   context=article_context)
+
+
+class AuthenticationView(BaseView):
+    def get(self, request, *args, **kwargs):
+        user_form = UserForm()
+        auth_context = {
+            'user_form': user_form,
+        }
+        return render(request,
+                      'user/sign_in.html',
+                      context=auth_context)
+
+    def post(self, request, *args, **kwargs):
+        return HttpResponse('ok')
