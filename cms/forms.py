@@ -11,8 +11,9 @@ class ArticleForm(forms.ModelForm):
 
 
 class UserForm(forms.ModelForm):
-    password = forms.PasswordInput()
-
     class Meta:
         model = auth_models.User
         fields = ('username', 'password',)
+        widgets = {
+            'password': forms.PasswordInput(),
+        }
