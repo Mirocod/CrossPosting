@@ -2,14 +2,13 @@ import os
 from json import JSONEncoder
 
 import requests
-from django.http import HttpRequest
-from django.http import HttpResponse
+from django.contrib.auth import authenticate
+from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 from django.views import View
-from django.views import View as BaseView
 
-from cms.forms import ArticleForm
-from cms.forms import UserForm
+from cms.forms import ArticleForm, UserForm
 from cms.models import Article
 
 
@@ -91,7 +90,7 @@ def new_article(request):
                   context=article_context)
 
 
-class AuthenticationView(BaseView):
+class AuthenticationView(View):
     def get(self, request, *args, **kwargs):
         user_form = UserForm()
         auth_context = {
@@ -102,4 +101,11 @@ class AuthenticationView(BaseView):
                       context=auth_context)
 
     def post(self, request, *args, **kwargs):
-        return HttpResponse('ok')
+        username = request.POST['username']
+        password = request.POST['password']
+        authenticated = authenticate(username=username,
+                                     password=password)
+        if authenticated:
+            return HttpResponseRedirect(reverse('new-article'))
+        else:
+            return HttpResponseRedirect(reverse('authenticate'))
