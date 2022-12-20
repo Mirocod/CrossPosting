@@ -30,7 +30,7 @@ class TelegramPromoter(Promoter):
         response = requests.get(send_message_url)
         result = response.json()
         if not result['ok']:
-            raise PromoteError('Похоже, нас послали доделывать приложение :-(')
+            raise PromoteError('Посылка сообщения в телеграм провалилась. Подробности %s' % str(result))
 
 
 class VkontaktePromoter(Promoter):
