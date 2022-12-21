@@ -9,7 +9,7 @@ class Command(BaseCommand):
         environments = {}
         with open(BASE_DIR / '.env') as env_file:
             for line in env_file:
-                env_key, env_value = line.split('=')
+                env_key, env_value = line.strip().split('=')
                 environments[env_key] = env_value
 
         signer = signing.Signer(salt=SALT)

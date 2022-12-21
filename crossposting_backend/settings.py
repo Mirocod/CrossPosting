@@ -18,10 +18,26 @@ from django.core import signing
 
 from .private.settings import *
 
+
+def decode_env(env_key: str) -> str:
+    signer = signing.Signer(salt=SALT)
+    signed_telegram_chat_id_dict = getenv(env_key)
+    return signer.unsign_object(signed_telegram_chat_id_dict)[env_key]
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 env_file = path.join(BASE_DIR, '.env')
 
 dotenv.read_dotenv(env_file)
+
+promoter_env_keys = (
+    'TELEGRAM_BOT_TOKEN', 'TELEGRAM_CHAT_ID', 'JOOMLA_TOKEN',
+    'VK_LOGIN', 'VK_PASSWORD', 'VK_OWNER_ID', 'OK_ACCESS_TOKEN', 'OK_APPLICATION_KEY',
+    'OK_APPLICATION_SECRET_KEY',
+)
+promoter_secrets = {}
+for promoter_env_key in promoter_env_keys:
+    promoter_secrets[promoter_env_key] = decode_env(promoter_env_key)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
