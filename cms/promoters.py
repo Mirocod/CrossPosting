@@ -21,14 +21,13 @@ class Promoter(abc.ABC):
 
 class TelegramPromoter(Promoter):
     def promote(self):
-        bot_token = os.getenv('TELEGRAM_BOT_TOKEN')
-        channel_id = os.getenv('TELEGRAM_CHAT_ID')
+        from crossposting_backend.private_settings import BOT_TOKEN, CHANNEL_ID
 
         long_text = f'{self.article.body}\n{self.article.link}'
-        querystring = (('chat_id', channel_id), ('text', long_text))
+        querystring = (('chat_id', CHANNEL_ID), ('text', long_text))
         encoded_querystring = urlencode(querystring)
 
-        send_message_url = f'https://api.telegram.org/bot{bot_token}/sendMessage?{encoded_querystring}'
+        send_message_url = f'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage?{encoded_querystring}'
 
         response = requests.get(send_message_url)
         result = response.json()
