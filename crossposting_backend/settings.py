@@ -23,11 +23,6 @@ env_file = path.join(BASE_DIR, '.env')
 
 dotenv.read_dotenv(env_file)
 
-BOT_TOKEN = getenv('TELEGRAM_BOT_TOKEN')
-signer = signing.Signer(salt=SALT)
-signed_telegram_chat_id_dict = getenv('TELEGRAM_CHAT_ID')
-CHANNEL_ID = signer.unsign_object(signed_telegram_chat_id_dict)['TELEGRAM_CHAT_ID']
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
 # Quick-start development settings - unsuitable for production

@@ -1,7 +1,7 @@
 .idea/
 .python-version
 db.sqlite3
-.env
+.env*
 __pycache__/
 identifier.sqlite
 vk_config.v2.json
