@@ -1,5 +1,6 @@
 import abc
 import os
+from urllib.parse import urlencode
 
 import requests
 
@@ -24,8 +25,10 @@ class TelegramPromoter(Promoter):
         channel_id = os.getenv('TELEGRAM_CHAT_ID')
 
         long_text = f'{self.article.body}\n{self.article.link}'
+        querystring = (('chat_id', channel_id), ('text', long_text))
+        encoded_querystring = urlencode(querystring)
 
-        send_message_url = f'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={channel_id}&text={long_text}'
+        send_message_url = f'https://api.telegram.org/bot{bot_token}/sendMessage?{encoded_querystring}'
 
         response = requests.get(send_message_url)
         result = response.json()
