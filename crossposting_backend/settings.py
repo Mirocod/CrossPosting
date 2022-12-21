@@ -10,18 +10,29 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+from os import path, getenv
+from pathlib import Path
 
-from .private_settings import *
+import dotenv
+from django.core import signing
+
+from .private.settings import *
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+env_file = path.join(BASE_DIR, '.env')
+
+dotenv.read_dotenv(env_file)
+
+BOT_TOKEN = getenv('TELEGRAM_BOT_TOKEN')
+signer = signing.Signer(salt=SALT)
+signed_telegram_chat_id_dict = getenv('TELEGRAM_CHAT_ID')
+CHANNEL_ID = signer.unsign_object(signed_telegram_chat_id_dict)['TELEGRAM_CHAT_ID']
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-from django.urls import reverse
-
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
-ALLOWED_HOSTS = []
 
 LOGIN_URL = '/cms/'
 
@@ -68,7 +79,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'crossposting_backend.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -78,7 +88,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -98,7 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -109,7 +117,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/

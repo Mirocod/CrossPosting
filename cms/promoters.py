@@ -21,7 +21,7 @@ class Promoter(abc.ABC):
 
 class TelegramPromoter(Promoter):
     def promote(self):
-        from crossposting_backend.private_settings import BOT_TOKEN, CHANNEL_ID
+        from crossposting_backend.settings import BOT_TOKEN, CHANNEL_ID
 
         long_text = f'{self.article.body}\n{self.article.link}'
         querystring = (('chat_id', CHANNEL_ID), ('text', long_text))
