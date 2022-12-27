@@ -20,6 +20,7 @@
                         >
                             Продвинуть
                         </button>
+                        <div id="vkShare"></div>
                     {% endbuttons %}
                 </form>
             </div>
@@ -28,9 +29,19 @@
 {% endblock content %}
 {% block extra_scripts %}
     <script type="text/javascript">
-      const gen = {
-        url: 'https://zakonvremeni.ru/analytics/7-3-/58372-sergej-lavrov-predlozheniya-rossii-po-ukraine-luchshe-vypolnit-podobru-pozdorovu.html'
-      }
-      document.write(VK.Share.button(gen));
+        $(document).ready(() => {
+            const appendShare = ($element) => {
+                const articleLink = $element.val();
+                const gen = {
+                    url: articleLink
+                }
+                const renderedButton = VK.Share.button(gen)
+                $('#vkShare').html(renderedButton)
+            }
+
+            $('[name="link"]').change((e) => {
+                appendShare($(e.target))
+            })
+        })
     </script>
 {% endblock %}
