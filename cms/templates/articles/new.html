@@ -14,13 +14,19 @@
                     {% csrf_token %}
                     {% bootstrap_form new_article_form %}
                     {% buttons %}
-                        <button
-                                class="btn btn-primary"
-                                type="submit"
-                        >
-                            Продвинуть
-                        </button>
-                        <div id="vkShare"></div>
+                        <div class="row">
+                            <div class="col">
+                                <button
+                                        class="btn btn-primary"
+                                        type="submit"
+                                >
+                                    Продвинуть
+                                </button>
+                            </div>
+
+                            <div id="vkShare" class="col"></div>
+                        </div>
+
                     {% endbuttons %}
                 </form>
             </div>
@@ -36,8 +42,8 @@
                     url: articleLink
                 }
                 const buttonType = {
-                    type: "link",
-                    text: 'Посмотреть'
+                    type: "custom",
+                    text: '<img src="https://vk.com/images/share_32_2x.png" width="32" height="32" alt="share icon" />'
                 }
                 document.getElementById('vkShare').innerHTML = VK.Share.button(gen, buttonType)
             }
