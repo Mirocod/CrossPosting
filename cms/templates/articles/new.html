@@ -35,7 +35,11 @@
                 const gen = {
                     url: articleLink
                 }
-                document.getElementById('vkShare').innerHTML = VK.Share.button(gen)
+                const buttonType = {
+                    type: "link",
+                    text: 'Посмотреть'
+                }
+                document.getElementById('vkShare').innerHTML = VK.Share.button(gen, buttonType)
             }
             const linkInput = document.querySelector('[name="link"]');
             linkInput.addEventListener('input', appendShare)
