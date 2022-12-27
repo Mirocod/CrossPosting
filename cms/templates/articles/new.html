@@ -38,10 +38,10 @@
                 const renderedButton = VK.Share.button(gen)
                 $('#vkShare').html(renderedButton)
             }
-
-            $('[name="link"]').change((e) => {
-                appendShare($(e.target))
-            })
+            const $linkInput = $('[name="link"]');
+            $linkInput
+                .on('input', (e => appendShare($(e.target))))
+                .on('paste', (e => appendShare($(e.target))))
         })
     </script>
 {% endblock %}
