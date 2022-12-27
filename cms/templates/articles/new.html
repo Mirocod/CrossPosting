@@ -29,19 +29,18 @@
 {% endblock content %}
 {% block extra_scripts %}
     <script type="text/javascript">
-        $(document).ready(() => {
-            const appendShare = ($element) => {
-                const articleLink = $element.val();
+        const main = () => {
+            const appendShare = (e) => {
+                const articleLink = e.target.value;
                 const gen = {
                     url: articleLink
                 }
-                const renderedButton = VK.Share.button(gen)
-                $('#vkShare').html(renderedButton)
+                document.getElementById('vkShare').innerHTML = VK.Share.button(gen)
             }
-            const $linkInput = $('[name="link"]');
-            $linkInput
-                .on('input', (e => appendShare($(e.target))))
-                .on('paste', (e => appendShare($(e.target))))
-        })
+            const linkInput = document.querySelector('[name="link"]');
+            linkInput.addEventListener('input', appendShare)
+            linkInput.addEventListener('paste', appendShare)
+        }
+        window.addEventListener('DOMContentLoaded', main)
     </script>
 {% endblock %}
