@@ -5,6 +5,9 @@ from .models import Article
 
 
 class ArticleForm(forms.ModelForm):
+    link_widget = forms.TextInput(attrs={'placeholder': 'Введите ссылку новости'})
+    link = forms.CharField(widget=link_widget)
+
     class Meta:
         model = Article
         fields = ('body', 'link',)
