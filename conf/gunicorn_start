@@ -1,0 +1,23 @@
+#!/bin/bash
+
+NAME="crossposting"
+DIR=/home/redex2000/crossposting/backend/current
+USER=redex2000
+GROUP=redex2000
+WORKERS=3
+BIND='0.0.0.0:8888'
+DJANGO_SETTINGS_MODULE=crossposting_backend.settings
+VENV_DIR=/home/redex2000/crossposting/backend/shared/crossposting_env/bin
+LOG_LEVEL=error
+cd $VENV_DIR
+source ./activate
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+export PYTHONPATH=$DIR:$PYTHONPATH
+exec ./gunicorn crossposting_backend.wsgi:application \
+  --name $NAME \
+  --workers $WORKERS \
+  --user=$USER \
+  --group=$GROUP \
+  --bind=$BIND \
+  --log-level=$LOG_LEVEL \
+  --log-file=-
