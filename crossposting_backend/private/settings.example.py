@@ -11,6 +11,10 @@ ALLOWED_HOSTS = ['localhost']
 
 CSRF_TRUSTED_ORIGINS = ['http://zakonvremeni.ru:8989',]
 
+# Если False, то данные в .env хранятся в открытом виде,
+# иначе в зашифрованном.
+ENV_ENCODED = False
+
 LOG_DIR = path.join(Path(__file__).resolve().parent.parent.parent, 'logs/')
 
 LOGGING = {
