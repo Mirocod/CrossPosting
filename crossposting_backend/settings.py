@@ -25,6 +25,15 @@ def decode_env(env_key: str) -> str:
     return signer.unsign_object(signed_telegram_chat_id_dict)[env_key]
 
 
+def return_env(env_key: str) -> str:
+    """
+    Функция нужна как стратегия, если not ENV_ENCODED
+    :param env_key:
+    :return:
+    """
+    return getenv(env_key)
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 env_file = path.join(BASE_DIR, '.env')
 
@@ -36,8 +45,13 @@ promoter_env_keys = (
     'OK_APPLICATION_SECRET_KEY',
 )
 promoter_secrets = {}
+if ENV_ENCODED:
+    decode_strategy = decode_env
+else:
+    decode_strategy = return_env
+
 for promoter_env_key in promoter_env_keys:
-    promoter_secrets[promoter_env_key] = decode_env(promoter_env_key)
+    promoter_secrets[promoter_env_key] = decode_strategy(promoter_env_key)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
