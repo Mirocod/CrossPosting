@@ -7,7 +7,9 @@ DEBUG = False
 SECRET_KEY = 'django-insecure-aaaa'
 
 SALT = 'aaaaaaaa'
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
+
+CSRF_TRUSTED_ORIGINS = ['http://zakonvremeni.ru:8989',]
 
 LOG_DIR = path.join(Path(__file__).resolve().parent.parent.parent, 'logs/')
 
