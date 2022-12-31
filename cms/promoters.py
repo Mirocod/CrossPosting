@@ -63,6 +63,7 @@ class OdnoklassnikiPromoter(Promoter):
         ok_access_token = promoter_secrets['OK_ACCESS_TOKEN']
         ok_application_key = promoter_secrets['OK_APPLICATION_KEY']
         ok_application_secret_key = promoter_secrets['OK_APPLICATION_SECRET_KEY']
+        ok_group_id = promoter_secrets['OK_GROUP_ID']
 
         session = ok_api.OkApi(access_token=ok_access_token,
                                application_key=ok_application_key,
@@ -82,7 +83,7 @@ class OdnoklassnikiPromoter(Promoter):
         encoded_attachments = JSONEncoder().encode(attachments)
         try:
             session.mediatopic.post(type='GROUP_THEME',
-                                    gid='70000001426867',
+                                    gid=ok_group_id,
                                     attachment=encoded_attachments)
         except ok_api.OkApiException as exc:
             raise PromoteError(exc)
