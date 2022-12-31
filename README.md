@@ -35,6 +35,11 @@
 * Секретный ключ приложения - в качестве значения OK_APPLICATION_SECRET_KEY
 
 
+## Настраиваем доступ к ВКонтакте
+1. Укажите логин, ваш email, под которым вы авторизуетесь в ВК, в качестве значения VK_LOGIN
+2. Укажите пароль, в качестве значения VK_PASSWORD
+3. Укажите ид группы, добавьте к нему минус в начале. Т.е. если № группы 7002, то нужно указать -7002, в качестве значения VK_OWNER_ID
+
 ## Настраиваем доступ к телеграм
 
 1. Создайте бота с помощью @BotFather в телеграм. Для этого укажите команду /newbot и нажмите Enter.
@@ -45,7 +50,7 @@
 6. Добавьте несколько тестовых сообщений в группу
 7. Запустите команду:
 ```
-python manage.py get_telegram_group_id
+python3.8 manage.py get_telegram_group_id
 ```
 6. В результате будет выведен ид канала
 7. Вставьте полученный ид в .env-файл, переменная TELEGRAM_CHAT_ID
@@ -78,4 +83,30 @@ from django.contrib.auth.models import User
 2. Создайте пользователя, под которым будете авторизоваться. Укажите своё имя пользователя, электропочту и пароль:
 ```python
 user = User.objects.create_user(username='user', email='user@mail.pro', password='123123123')
+```
+3. Выйти из консоли:
+```python
+quit()
+```
+
+# Шифруем .env-файл
+
+1. По умолчанию настройка шифрования в crossposting_backend/private/settings.py ENV_ENCODED равна False. Это означает, 
+что .env-файл не шифрован.
+2. Если нужно повысить защищённость данных, то шифруем .env-файл.
+3. Если у вас уже зашифрован .env-файл, то на всякий случай создайте резервную копию этого файла. 
+4. Далее создайте .env-файл и укажите незашифрованные доступы к социальным сетям.
+5. В crossposting_backend/private/settings.py значение ENV_ENCODED д.б. False.
+6. Перезапустите веб-приложение:
+```shell
+supervisorctl restart crossposting_django
+```
+7. Выполните команду для шифровки:
+python3.8 manage.py encode_file
+8. В результате будет создан файл .env.encoded
+9. Замените .env созданным файлом .env.encoded
+10. В crossposting_backend/private/settings.py значение ENV_ENCODED замените на True.
+11. Перезапустите веб-приложение:
+```shell
+supervisorctl restart crossposting_django
 ```
