@@ -19,6 +19,7 @@
                                 <button
                                         class="btn btn-primary"
                                         type="submit"
+                                        disabled="disabled"
                                 >
                                     Продвинуть
                                 </button>
@@ -35,18 +36,28 @@
 {% endblock content %}
 {% block extra_scripts %}
     <script type="text/javascript">
-        const main = () => {
-            const appendShare = (e) => {
-                const articleLink = e.target.value;
-                const gen = {
-                    url: articleLink
-                }
-                const buttonType = {
-                    type: "custom",
-                    text: '<img src="https://vk.com/images/share_32_2x.png" width="32" height="32" alt="share icon" />'
-                }
-                document.getElementById('vkShare').innerHTML = VK.Share.button(gen, buttonType)
+        let submitBtn = null
+        const enableSubmitBtn = () => {
+            submitBtn.disabled = false
+        }
+        const appendShare = (e) => {
+            submitBtn.disabled = true
+
+            const articleLink = e.target.value;
+            const gen = {
+                url: articleLink
             }
+            const buttonType = {
+                type: "custom",
+                text: '<img src="https://vk.com/images/share_32_2x.png" width="32" height="32" alt="share icon" />'
+            }
+            document.getElementById('vkShare').innerHTML = VK.Share.button(gen, buttonType)
+            const vkButtons = document.querySelectorAll('a[href^="//vk.com/"]')
+            vkButtons.forEach((vkBtn) => vkBtn.addEventListener('click', enableSubmitBtn))
+        }
+        const main = () => {
+            submitBtn = document.querySelector('button[type="submit"]')
+
             const linkInput = document.querySelector('[name="link"]');
             linkInput.addEventListener('input', appendShare)
             linkInput.addEventListener('paste', appendShare)
