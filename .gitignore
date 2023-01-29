@@ -7,3 +7,4 @@ identifier.sqlite
 vk_config.v2.json
 crossposting_backend/private/settings.py
 logs/
+static/
