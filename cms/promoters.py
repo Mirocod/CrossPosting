@@ -37,21 +37,22 @@ class TelegramPromoter(Promoter):
 
 class VkontaktePromoter(Promoter):
     def promote(self):
-        vk_login = promoter_secrets['VK_LOGIN']
-        vk_password = promoter_secrets['VK_PASSWORD']
         vk_owner_id = promoter_secrets['VK_OWNER_ID']
-
-        import vk_api
-        session = vk_api.VkApi(login=vk_login,
-                               password=vk_password)
-        session.auth()
-        api = session.get_api()
+        vk_token = promoter_secrets['VK_TOKEN']
+        from_group = 1
 
         try:
-            api.wall.post(owner_id=vk_owner_id,
-                          message=self.article.body,
-                          attachments=self.article.link)
-        except vk_api.VkApiError as exc:
+            requests.post('https://api.vk.com/method/wall.post',
+                            params={
+                                    'access_token': vk_token,
+                                    'owner_id': vk_owner_id,
+                                    'from_group': from_group,
+                                    'message': self.article.body,
+                                    'attachment': self.article.link,
+                                    'signed': 0,
+                                    'v': '5.131'
+                                    })
+        except Exception as exc:
             raise PromoteError(exc)
 
 
