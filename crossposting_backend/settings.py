@@ -41,7 +41,7 @@ dotenv.read_dotenv(env_file)
 
 promoter_env_keys = (
     'TELEGRAM_BOT_TOKEN', 'TELEGRAM_CHAT_ID', 'JOOMLA_TOKEN',
-    'VK_LOGIN', 'VK_PASSWORD', 'VK_OWNER_ID', 'OK_ACCESS_TOKEN', 'OK_APPLICATION_KEY',
+    'VK_OWNER_ID', 'VK_TOKEN', 'OK_ACCESS_TOKEN', 'OK_APPLICATION_KEY',
     'OK_APPLICATION_SECRET_KEY', 'OK_GROUP_ID',
 )
 promoter_secrets = {}
