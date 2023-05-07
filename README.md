@@ -41,10 +41,10 @@
 ## Настраиваем доступ к ВКонтакте
 
 1. Создайте приложение в ВК (standalone). Укажите в приложении сообщество
-2. Скопируйте ссылку ниже, укажите ID приложения и группы. Вставьте ссылку в адресную строку браузере, нажмите Enter
-   https://oauth.vk.com/authorize?client_id=ID-ПРИЛОЖЕНИЯ&scope=8192&redirect_uri=https://oauth.vk.com/blank.html&display=page&response_type=token&group_ids=ID-ГРУППЫ
+2. Скопируйте ссылку ниже, укажите ID приложения.Вставьте ссылку в адресную строку браузере, нажмите Enter
+   https://oauth.vk.com/authorize?client_id=ID-приложения&scope=wall,offline&redirect_uri=https://oauth.vk.com/blank.html&display=page&response_type=token&revoke=1
 3. После этого в вашей адресной строке появится необходимый ключ. Он копируется вручную: после access\_token= и перед &expires\_in.
-4. Укажите токен, в качестве значения VK_LOGIN
+4. Укажите токен, в качестве значения VK_TOKIN
 5. Укажите id сообщества со знаком «-», в качестве значения VK_OWNER_ID
 
 ## Настраиваем доступ к телеграм
